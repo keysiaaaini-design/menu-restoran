@@ -1,629 +1,480 @@
-```css
-/* ========================================
-   1. PENGATURAN DASAR
-======================================== */
+```javascript
+/* =====================================
+   1. DATA DAFTAR MENU
+===================================== */
+
+// Daftar menu beserta kategori, harga, dan foto.
+// Foto disimpan secara lokal agar bisa dibuka offline.
+const menus = [
+    {
+        id: 1,
+        name: "Nasi Goreng",
+        category: "Makanan",
+        price: 15000,
+        description: "Nasi goreng dengan bumbu khas.",
+        image: "images/nasi-goreng.jpg"
+    },
+    {
+        id: 2,
+        name: "Mie Goreng",
+        category: "Makanan",
+        price: 13000,
+        description: "Mie goreng gurih dengan sayuran.",
+        image: "images/mie-goreng.jpg"
+    },
+    {
+        id: 3,
+        name: "Ayam Geprek",
+        category: "Makanan",
+        price: 18000,
+        description: "Ayam crispy dengan sambal.",
+        image: "images/ayam-geprek.jpg"
+    },
+    {
+        id: 4,
+        name: "Nasi Ayam Bakar",
+        category: "Makanan",
+        price: 20000,
+        description: "Nasi dan ayam bakar berbumbu.",
+        image: "images/ayam-bakar.jpg"
+    },
+    {
+        id: 5,
+        name: "Kentang Goreng",
+        category: "Camilan",
+        price: 10000,
+        description: "Kentang goreng renyah.",
+        image: "images/kentang-goreng.jpg"
+    },
+    {
+        id: 6,
+        name: "Roti Bakar",
+        category: "Camilan",
+        price: 12000,
+        description: "Roti bakar dengan isian manis.",
+        image: "images/roti-bakar.jpg"
+    },
+    {
+        id: 7,
+        name: "Es Teh",
+        category: "Minuman",
+        price: 5000,
+        description: "Teh dingin yang menyegarkan.",
+        image: "images/es-teh.jpg"
+    },
+    {
+        id: 8,
+        name: "Es Jeruk",
+        category: "Minuman",
+        price: 7000,
+        description: "Minuman jeruk segar.",
+        image: "images/es-jeruk.jpg"
+    },
+    {
+        id: 9,
+        name: "Kopi Susu",
+        category: "Minuman",
+        price: 12000,
+        description: "Kopi dengan campuran susu.",
+        image: "images/kopi-susu.jpg"
+    },
+    {
+        id: 10,
+        name: "Cokelat Dingin",
+        category: "Minuman",
+        price: 10000,
+        description: "Minuman cokelat dingin.",
+        image: "images/cokelat.jpg"
+    }
+];
+
+
+/* =====================================
+   2. PENGATURAN KERANJANG
+===================================== */
+
+// Keranjang tetap disimpan di memori selama halaman terbuka.
+let cart = [];
+
+// Kategori awal yang ditampilkan.
+let selectedCategory = "Semua";
+
+// Mengambil elemen dari HTML.
+const menuList = document.getElementById("menu-list");
+const cartList = document.getElementById("cart-list");
+const totalPrice = document.getElementById("total-price");
+const searchInput = document.getElementById("search");
 
-/* Mengatur warna utama website */
-:root {
-    --primary: #8b4513;
-    --primary-dark: #66300e;
-    --secondary: #f8eee4;
-    --background: #fffaf5;
-    --text: #30251f;
-    --muted: #786b62;
-    --white: #ffffff;
-    --border: #eadfd5;
-    --success: #218838;
-}
-
-/* Mengatur semua elemen */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
-
-/* Tampilan utama halaman */
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--background);
-    color: var(--text);
-    line-height: 1.6;
-}
-
-/* Membatasi lebar konten */
-.container {
-    width: 90%;
-    max-width: 1150px;
-    margin: auto;
-}
-
-/* Mengatur tampilan tautan */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Mengatur tampilan tombol dan input */
-button,
-input,
-textarea {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-/* ========================================
-   2. HEADER DAN NAVIGASI
-======================================== */
-
-.header {
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.navbar {
-    min-height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-/* Logo website */
-.logo {
-    font-size: 27px;
-    font-weight: bold;
-    color: var(--primary);
-}
-
-.logo span {
-    color: #d88b45;
-}
-
-/* Menu navigasi */
-nav {
-    display: flex;
-    gap: 25px;
-}
-
-nav a {
-    font-size: 14px;
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-nav a:hover {
-    color: var(--primary);
-}
-
-/* Tombol keranjang di header */
-.cart-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 15px;
-    background-color: var(--secondary);
-    color: var(--primary);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#cart-count {
-    background-color: var(--primary);
-    color: var(--white);
-    padding: 2px 7px;
-    border-radius: 20px;
-}
-
-/* ========================================
-   3. BAGIAN HERO
-======================================== */
-
-.hero {
-    background: linear-gradient(
-        135deg,
-        #f8eee4,
-        #f4d6b8
-    );
-    padding: 75px 0;
-}
-
-.hero-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-}
-
-.hero-text {
-    max-width: 600px;
-}
-
-.subtitle {
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-}
-
-.hero h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.hero-text > p:not(.subtitle) {
-    color: var(--muted);
-    margin-bottom: 25px;
-}
-
-/* Tombol utama */
-.primary-button {
-    display: inline-block;
-    border: none;
-    border-radius: 10px;
-    padding: 13px 22px;
-    background-color: var(--primary);
-    color: var(--white);
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.primary-button:hover {
-    background-color: var(--primary-dark);
-}
-
-/* Ilustrasi makanan */
-.hero-image {
-    width: 280px;
-    height: 280px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    border-radius: 50%;
-    background-color: var(--white);
-    font-size: 110px;
-    box-shadow: 0 15px 40px rgba(80, 40, 10, 0.1);
-}
-
-.hero-image span {
-    position: absolute;
-    font-size: 48px;
-}
-
-.hero-image span:first-child {
-    right: 0;
-    bottom: 25px;
-}
-
-.hero-image span:last-child {
-    top: 15px;
-    left: 5px;
-}
-
-/* ========================================
-   4. BAGIAN MENU
-======================================== */
-
-.menu-section {
-    padding: 75px 0;
-}
-
-.section-heading {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.section-heading h2 {
-    font-size: 32px;
-    margin-bottom: 8px;
-}
-
-.section-heading > p:last-child {
-    color: var(--muted);
-}
-
-/* Kolom pencarian */
-.search-box {
-    max-width: 600px;
-    margin: 0 auto 25px;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 15px 18px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    outline: none;
-    background-color: var(--white);
-}
-
-.search-box input:focus {
-    border-color: var(--primary);
-}
-
-/* Tombol kategori */
-.category-list {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 35px;
-}
-
-.category-button {
-    padding: 10px 20px;
-    border: 1px solid var(--border);
-    border-radius: 25px;
-    background-color: var(--white);
-    color: var(--text);
-    transition: all 0.3s;
-}
-
-.category-button:hover,
-.category-button.active {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: var(--white);
-}
-
-/* Susunan kartu menu */
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 25px;
-}
-
-/* Kartu setiap produk */
-.menu-card {
-    overflow: hidden;
-    background-color: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.menu-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(60, 35, 15, 0.08);
-}
-
-/* Foto produk */
-.menu-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    background-color: var(--secondary);
-}
-
-/* Informasi produk */
-.menu-info {
-    padding: 18px;
-}
-
-.menu-info h3 {
-    font-size: 18px;
-    margin-bottom: 7px;
-}
-
-.menu-description {
-    min-height: 45px;
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 12px;
-}
-
-/* Kategori produk */
-.menu-category {
-    display: inline-block;
-    background-color: var(--secondary);
-    color: var(--primary);
-    border-radius: 5px;
-    padding: 4px 8px;
-    font-size: 11px;
-    margin-bottom: 12px;
-}
-
-/* Harga dan tombol tambah */
-.menu-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.menu-price {
-    color: var(--primary);
-    font-size: 17px;
-    font-weight: bold;
-}
-
-/* Tombol tambah ke keranjang */
-.add-button {
-    padding: 9px 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: var(--primary);
-    color: var(--white);
-    font-size: 13px;
-}
-
-.add-button:hover {
-    background-color: var(--primary-dark);
-}
-
-/* Pesan ketika menu kosong */
-.empty-message {
-    text-align: center;
-    color: var(--muted);
-    padding: 30px;
-}
-
-/* ========================================
-   5. KERANJANG PESANAN
-======================================== */
-
-.order-section {
-    padding: 60px 30px;
-    margin-bottom: 70px;
-    background-color: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-}
-
-.cart-list {
-    margin-top: 25px;
-}
-
-.empty-cart {
-    text-align: center;
-    padding: 25px;
-    color: var(--muted);
-    background-color: var(--background);
-    border-radius: 10px;
-}
-
-/* Setiap baris pesanan */
-.cart-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 17px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.cart-item h3 {
-    font-size: 15px;
-}
-
-.cart-item p {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-/* Pengaturan jumlah barang */
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.quantity-control button {
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background-color: var(--background);
-}
-
-/* Tombol hapus produk */
-.remove-button {
-    border: none;
-    background: none;
-    color: #c0392b;
-    font-size: 13px;
-}
-
-/* Ringkasan harga */
-.cart-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin: 25px 0;
-    padding: 20px 0;
-    border-top: 2px solid var(--border);
-    border-bottom: 2px solid var(--border);
-}
-
-.cart-summary strong {
-    color: var(--primary);
-    font-size: 23px;
-}
-
-/* Form pemesanan */
-.order-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+const categoryButtons = document.querySelectorAll(
+    ".categories button"
+);
 
-.order-form label {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.order-form input,
-.order-form textarea {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    outline: none;
-    background-color: var(--background);
-}
 
-.order-form input:focus,
-.order-form textarea:focus {
-    border-color: var(--primary);
-}
+/* =====================================
+   3. FORMAT RUPIAH
+===================================== */
 
-.order-form textarea {
-    resize: vertical;
+// Mengubah angka menjadi format mata uang Rupiah.
+function rupiah(number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }).format(number);
 }
 
-/* Tombol pesan */
-.order-button {
-    margin-top: 12px;
-    width: 100%;
-}
 
-/* Keterangan tambahan */
-.information {
-    margin-top: 18px;
-    color: var(--muted);
-    font-size: 12px;
-    text-align: center;
-}
+/* =====================================
+   4. MENAMPILKAN MENU
+===================================== */
 
-/* ========================================
-   6. FOOTER
-======================================== */
+// Menampilkan menu berdasarkan pencarian dan kategori.
+function displayMenus() {
+    const keyword = searchInput.value.toLowerCase().trim();
 
-.footer {
-    padding: 35px 0;
-    text-align: center;
-    background-color: #30251f;
-    color: var(--white);
-}
+    const filteredMenus = menus.filter(function (menu) {
+        const matchesKeyword =
+            menu.name.toLowerCase().includes(keyword);
 
-.footer h3 {
-    font-size: 24px;
-    margin-bottom: 8px;
-}
+        const matchesCategory =
+            selectedCategory === "Semua" ||
+            menu.category === selectedCategory;
 
-.footer p {
-    color: #d8cbc1;
-    font-size: 13px;
-    margin-top: 5px;
-}
+        return matchesKeyword && matchesCategory;
+    });
 
-/* ========================================
-   7. TAMPILAN TABLET DAN HP
-======================================== */
+    menuList.innerHTML = "";
 
-/* Untuk layar tablet */
-@media (max-width: 900px) {
-    .menu-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    if (filteredMenus.length === 0) {
+        menuList.textContent = "Menu tidak ditemukan.";
+        return;
     }
 
-    .hero-image {
-        width: 220px;
-        height: 220px;
-        font-size: 85px;
-    }
+    filteredMenus.forEach(function (menu) {
+        // Membuat kartu menu.
+        const card = document.createElement("article");
+        card.className = "menu-card";
 
-    .hero-image span {
-        font-size: 38px;
-    }
+        // Membuat foto.
+        const image = document.createElement("img");
+        image.src = menu.image;
+        image.alt = menu.name;
+        image.loading = "lazy";
+
+        // Memberikan tampilan pengganti jika foto tidak ditemukan.
+        image.onerror = function () {
+            image.removeAttribute("src");
+            image.alt = "Foto " + menu.name + " belum tersedia";
+        };
+
+        // Membuat informasi produk.
+        const info = document.createElement("div");
+        info.className = "menu-info";
+
+        const category = document.createElement("span");
+        category.className = "category-label";
+        category.textContent = menu.category;
+
+        const name = document.createElement("h3");
+        name.textContent = menu.name;
+
+        const description = document.createElement("p");
+        description.className = "description";
+        description.textContent = menu.description;
+
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = rupiah(menu.price);
+
+        // Tombol menambahkan produk ke keranjang.
+        const button = document.createElement("button");
+        button.className = "add-button";
+        button.textContent = "+ Tambah";
+
+        button.addEventListener("click", function () {
+            addToCart(menu.id);
+        });
+
+        info.append(
+            category,
+            name,
+            description,
+            price,
+            button
+        );
+
+        card.append(image, info);
+        menuList.appendChild(card);
+    });
 }
 
-/* Untuk layar HP */
-@media (max-width: 600px) {
-    .container {
-        width: 92%;
+
+/* =====================================
+   5. PENCARIAN DAN KATEGORI
+===================================== */
+
+// Pencarian berjalan setiap kali pengguna mengetik.
+searchInput.addEventListener("input", displayMenus);
+
+// Mengubah menu berdasarkan kategori yang dipilih.
+categoryButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        selectedCategory = button.dataset.category;
+
+        // Menandai tombol kategori yang aktif.
+        categoryButtons.forEach(function (item) {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        displayMenus();
+    });
+});
+
+
+/* =====================================
+   6. TAMBAH MENU KE KERANJANG
+===================================== */
+
+// Menambah produk atau jumlah produk.
+function addToCart(menuId) {
+    const existingItem = cart.find(function (item) {
+        return item.id === menuId;
+    });
+
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({
+            id: menuId,
+            quantity: 1
+        });
     }
 
-    .navbar {
-        flex-wrap: wrap;
-        padding: 12px 0;
-        gap: 12px;
-    }
-
-    .logo {
-        font-size: 23px;
-    }
-
-    nav {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    nav a {
-        font-size: 12px;
-    }
-
-    .cart-button {
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-
-    .hero {
-        padding: 45px 0;
-    }
-
-    .hero-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero h1 {
-        font-size: 32px;
-    }
-
-    .hero-image {
-        width: 190px;
-        height: 190px;
-        font-size: 75px;
-    }
-
-    .hero-image span {
-        font-size: 32px;
-    }
-
-    .menu-section {
-        padding: 50px 0;
-    }
-
-    .section-heading h2 {
-        font-size: 27px;
-    }
-
-    .menu-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .menu-card img {
-        height: 220px;
-    }
-
-    .order-section {
-        padding: 35px 18px;
-    }
-
-    .cart-item {
-        flex-wrap: wrap;
-    }
-
-    .quantity-control {
-        gap: 7px;
-    }
+    displayCart();
 }
+
+
+/* =====================================
+   7. UBAH JUMLAH DAN HAPUS MENU
+===================================== */
+
+// Mengubah jumlah produk.
+function changeQuantity(menuId, amount) {
+    const item = cart.find(function (product) {
+        return product.id === menuId;
+    });
+
+    if (!item) {
+        return;
+    }
+
+    item.quantity += amount;
+
+    // Menghapus produk jika jumlahnya nol.
+    if (item.quantity <= 0) {
+        cart = cart.filter(function (product) {
+            return product.id !== menuId;
+        });
+    }
+
+    displayCart();
+}
+
+// Menghapus satu produk dari keranjang.
+function removeItem(menuId) {
+    cart = cart.filter(function (item) {
+        return item.id !== menuId;
+    });
+
+    displayCart();
+}
+
+
+/* =====================================
+   8. PENJUMLAHAN OTOMATIS
+===================================== */
+
+// Menghitung total semua barang di keranjang.
+function calculateTotal() {
+    return cart.reduce(function (total, item) {
+        const menu = menus.find(function (product) {
+            return product.id === item.id;
+        });
+
+        return total + (menu.price * item.quantity);
+    }, 0);
+}
+
+
+/* =====================================
+   9. MENAMPILKAN KERANJANG
+===================================== */
+
+// Memperbarui daftar pesanan dan total harga.
+function displayCart() {
+    cartList.innerHTML = "";
+
+    if (cart.length === 0) {
+        cartList.textContent = "Belum ada pesanan.";
+    }
+
+    cart.forEach(function (item) {
+        const menu = menus.find(function (product) {
+            return product.id === item.id;
+        });
+
+        const row = document.createElement("div");
+        row.className = "cart-item";
+
+        // Informasi nama dan subtotal produk.
+        const details = document.createElement("div");
+
+        const name = document.createElement("h3");
+        name.textContent = menu.name;
+
+        const subtotal = document.createElement("p");
+        subtotal.textContent = rupiah(
+            menu.price * item.quantity
+        );
+
+        details.append(name, subtotal);
+
+        // Tombol mengatur jumlah.
+        const quantity = document.createElement("div");
+        quantity.className = "quantity";
+
+        const minus = document.createElement("button");
+        minus.textContent = "-";
+        minus.setAttribute("aria-label", "Kurangi jumlah");
+
+        minus.addEventListener("click", function () {
+            changeQuantity(menu.id, -1);
+        });
+
+        const number = document.createElement("span");
+        number.textContent = item.quantity;
+
+        const plus = document.createElement("button");
+        plus.textContent = "+";
+        plus.setAttribute("aria-label", "Tambah jumlah");
+
+        plus.addEventListener("click", function () {
+            changeQuantity(menu.id, 1);
+        });
+
+        quantity.append(minus, number, plus);
+
+        // Tombol menghapus produk.
+        const remove = document.createElement("button");
+        remove.className = "delete-button";
+        remove.textContent = "Hapus";
+
+        remove.addEventListener("click", function () {
+            removeItem(menu.id);
+        });
+
+        row.append(details, quantity, remove);
+        cartList.appendChild(row);
+    });
+
+    // Menampilkan hasil penjumlahan otomatis.
+    totalPrice.textContent = rupiah(calculateTotal());
+}
+
+
+/* =====================================
+   10. MENGOSONGKAN KERANJANG
+===================================== */
+
+// Menghapus semua produk yang dipilih.
+document.getElementById("reset-cart").addEventListener(
+    "click",
+    function () {
+        cart = [];
+        displayCart();
+    }
+);
+
+
+/* =====================================
+   11. PEMESANAN WHATSAPP
+===================================== */
+
+// Ganti dengan nomor WhatsApp cafe yang sebenarnya.
+const whatsappNumber = "6281234567890";
+
+// Membuat ringkasan pesanan dan membuka WhatsApp.
+document.getElementById("order-button").addEventListener(
+    "click",
+    function () {
+        if (cart.length === 0) {
+            alert("Silakan pilih menu terlebih dahulu.");
+            return;
+        }
+
+        const customerName = document
+            .getElementById("customer-name")
+            .value.trim();
+
+        const note = document
+            .getElementById("order-note")
+            .value.trim();
+
+        if (!customerName) {
+            alert("Masukkan nama pemesan terlebih dahulu.");
+            return;
+        }
+
+        // Memeriksa nomor WhatsApp.
+        if (!/^\d{10,15}$/.test(whatsappNumber)) {
+            alert("Nomor WhatsApp cafe belum benar.");
+            return;
+        }
+
+        let message = "Halo, saya ingin memesan menu.\n\n";
+        message += "Nama: " + customerName + "\n\n";
+        message += "Daftar pesanan:\n";
+
+        cart.forEach(function (item, index) {
+            const menu = menus.find(function (product) {
+                return product.id === item.id;
+            });
+
+            message +=
+                (index + 1) + ". " +
+                menu.name + " x" + item.quantity +
+                " = " +
+                rupiah(menu.price * item.quantity) + "\n";
+        });
+
+        message += "\nTotal: " + rupiah(calculateTotal());
+
+        if (note) {
+            message += "\nCatatan: " + note;
+        }
+
+        message += "\n\nMohon konfirmasi pesanan saya.";
+
+        const whatsappURL =
+            "https://wa.me/" + whatsappNumber +
+            "?text=" + encodeURIComponent(message);
+
+        window.open(
+            whatsappURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+);
+
+
+/* =====================================
+   12. MENJALANKAN WEBSITE
+===================================== */
+
+// Menampilkan menu dan keranjang saat halaman dibuka.
+displayMenus();
+displayCart();
 ```
