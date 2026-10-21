@@ -1,0 +1,189 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- Pengaturan karakter dan tampilan responsif -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Judul website -->
+    <title>MenuKu | Menu Digital Cafe</title>
+
+    <!-- Menghubungkan file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header website -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="#" class="logo">Menu<span>Ku.</span></a>
+
+            <!-- Navigasi website -->
+            <nav>
+                <a href="#beranda">Beranda</a>
+                <a href="#menu">Daftar Menu</a>
+                <a href="#pesanan">Pesanan</a>
+            </nav>
+
+            <!-- Tombol untuk melihat keranjang -->
+            <a href="#pesanan" class="cart-button">
+                🛒 Keranjang
+                <span id="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Bagian utama / hero -->
+    <section class="hero" id="beranda">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <p class="subtitle">SELAMAT DATANG DI MENU DIGITAL</p>
+
+                <h1>Temukan Menu Favoritmu dengan Mudah!</h1>
+
+                <p>
+                    Lihat berbagai pilihan makanan dan minuman,
+                    cek harga, lalu susun pesanan langsung dari HP.
+                </p>
+
+                <!-- Tombol menuju daftar menu -->
+                <a href="#menu" class="primary-button">
+                    Lihat Menu
+                </a>
+            </div>
+
+            <!-- Ilustrasi makanan menggunakan emoji -->
+            <div class="hero-image" aria-label="Ilustrasi makanan">
+                🍔
+                <span>🍟</span>
+                <span>🥤</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bagian daftar menu -->
+    <main class="container">
+
+        <section class="menu-section" id="menu">
+            <div class="section-heading">
+                <p class="subtitle">PILIHAN TERBAIK</p>
+                <h2>Daftar Menu</h2>
+                <p>Pilih makanan dan minuman favoritmu.</p>
+            </div>
+
+            <!-- Kolom pencarian menu -->
+            <div class="search-box">
+                <input
+                    type="search"
+                    id="search-input"
+                    placeholder="Cari makanan atau minuman..."
+                    aria-label="Cari menu"
+                >
+            </div>
+
+            <!-- Tombol filter kategori -->
+            <div class="category-list">
+                <button class="category-button active"
+                        data-category="Semua">
+                    Semua
+                </button>
+
+                <button class="category-button"
+                        data-category="Makanan">
+                    Makanan
+                </button>
+
+                <button class="category-button"
+                        data-category="Minuman">
+                    Minuman
+                </button>
+
+                <button class="category-button"
+                        data-category="Camilan">
+                    Camilan
+                </button>
+            </div>
+
+            <!-- Daftar menu akan dibuat oleh JavaScript -->
+            <div class="menu-grid" id="menu-list">
+                <!-- Kartu menu ditampilkan melalui script.js -->
+            </div>
+
+            <!-- Pesan jika menu tidak ditemukan -->
+            <p id="empty-menu" class="empty-message" hidden>
+                Menu tidak ditemukan. Coba kata kunci lain.
+            </p>
+        </section>
+
+        <!-- Bagian keranjang pesanan -->
+        <section class="order-section" id="pesanan">
+            <div class="section-heading">
+                <p class="subtitle">PESANANMU</p>
+                <h2>Keranjang Pesanan</h2>
+                <p>Periksa kembali menu yang kamu pilih.</p>
+            </div>
+
+            <!-- Daftar item pesanan -->
+            <div id="cart-list" class="cart-list">
+                <p class="empty-cart">
+                    Keranjang masih kosong.
+                </p>
+            </div>
+
+            <!-- Ringkasan total harga -->
+            <div class="cart-summary">
+                <span>Total Harga</span>
+                <strong id="cart-total">Rp0</strong>
+            </div>
+
+            <!-- Form informasi pelanggan -->
+            <form id="order-form" class="order-form">
+                <label for="customer-name">Nama Pemesan</label>
+
+                <input
+                    type="text"
+                    id="customer-name"
+                    placeholder="Masukkan nama kamu"
+                    required
+                >
+
+                <label for="order-note">Catatan Pesanan</label>
+
+                <textarea
+                    id="order-note"
+                    placeholder="Contoh: tidak pedas, es sedikit..."
+                    rows="3"
+                ></textarea>
+
+                <!-- Tombol mengirim pesanan -->
+                <button type="submit" class="primary-button order-button">
+                    Pesan melalui WhatsApp
+                </button>
+            </form>
+
+            <!-- Informasi cara kerja website -->
+            <p class="information">
+                Pesanan akan diteruskan ke WhatsApp untuk dikonfirmasi
+                oleh pihak cafe. Pembayaran tidak diproses di website.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Footer website -->
+    <footer class="footer">
+        <div class="container">
+            <h3>MenuKu.</h3>
+            <p>Menu digital yang praktis untuk semua orang.</p>
+            <p>&copy; 2026 MenuKu. Proyek website pelajar.</p>
+        </div>
+    </footer>
+
+    <!-- Menghubungkan file JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
